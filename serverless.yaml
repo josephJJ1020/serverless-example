@@ -1,0 +1,41 @@
+service: sample
+
+provider:
+  name: aws
+  runtime: nodejs18.x
+  region: ap-south-1
+  memorySize: 512
+  architecture: arm64
+  timeout: 15
+
+functions:
+  mainFuncion:
+    handler: src/handlers.main
+    events:
+      - http:
+          path: /test/{id}
+          method: get
+          cors: true
+          private: true
+  hello:
+    handler: src/handlers.hello
+    events:
+      - http:
+          path: /test/hello
+          method: get
+  createUser:
+    handler: src/handlers/createAgent.main
+    events:
+      - http:
+          path: /user/create
+          method: post
+  getUser:
+    handler: src/handlers/getAgent.main
+    events:
+      - http:
+          path: /user/login
+          method: post
+
+plugins:
+  - "serverless-offline"
+  - "serverless-esbuild"
